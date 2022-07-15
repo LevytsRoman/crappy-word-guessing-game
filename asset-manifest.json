@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "https://levytsroman.github.io/crappy-word-guessing-game/build/static/css/main.c483259f.css",
+    "main.js": "https://levytsroman.github.io/crappy-word-guessing-game/build/static/js/main.71b4a550.js",
+    "static/js/787.28cb0dcd.chunk.js": "https://levytsroman.github.io/crappy-word-guessing-game/build/static/js/787.28cb0dcd.chunk.js",
+    "static/media/words.txt": "https://levytsroman.github.io/crappy-word-guessing-game/build/static/media/words.81480bc12d0960be912d.txt",
+    "index.html": "https://levytsroman.github.io/crappy-word-guessing-game/build/index.html",
+    "main.c483259f.css.map": "https://levytsroman.github.io/crappy-word-guessing-game/build/static/css/main.c483259f.css.map",
+    "main.71b4a550.js.map": "https://levytsroman.github.io/crappy-word-guessing-game/build/static/js/main.71b4a550.js.map",
+    "787.28cb0dcd.chunk.js.map": "https://levytsroman.github.io/crappy-word-guessing-game/build/static/js/787.28cb0dcd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c483259f.css",
+    "static/js/main.71b4a550.js"
+  ]
+}
