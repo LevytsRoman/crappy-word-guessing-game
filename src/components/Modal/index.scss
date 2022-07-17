@@ -1,0 +1,20 @@
+.modal-backdrop {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(230, 228, 225, 0.2);
+  backdrop-filter: blur(4px);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.modal-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50vw;
+  height: 50vh;
+  background-color: white;
+  border: 1px solid black;
+}

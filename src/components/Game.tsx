@@ -6,77 +6,61 @@ import {
   useRef,
 } from 'react';
 import Confetti from 'react-confetti';
-import validGuesses from '../words.txt';
 import Letter from './Letter';
 import FlippingLetter from './FlippingLetter';
 import classNames from 'classnames';
 import Keyboard from './Keyboard';
 import { GREEN, YELLOW, GREY, LETTER_LIST } from './constants';
+import { save, retrieve } from '../storage/localStorage';
+import {
+  GameBoardType,
+  findIndexOfFirstEmptyRow,
+  currentGuessArray,
+  indexToDelete,
+} from '../utils/board-utils';
 
-const emptyBoard: () => { letter: string | null; color?: string }[][] = () => {
-  return Array(6)
-    .fill(0)
-    .map(() =>
-      Array(5)
-        .fill(0)
-        .map(() => ({
-          letter: null,
-        }))
-    );
+const useFlipRow = (board, i) => {
+  return (
+    board[i].every((letter) => letter.color) &&
+    board[i + 1] &&
+    board[i + 1].some((letter) => !letter.color)
+  );
 };
 
-const findIndexOfFirstEmptyRow = (board) => {
-  for (let i = 0; i < 6; i++) {
-    for (let j = 0; j < 5; j++) {
-      if (!board[i][j].letter) {
-        return [i, j];
-      }
-    }
-  }
-  return [];
+type GameProps = {
+  setStats: (result: boolean | number) => void;
+  setGameBoard: (gameBoard: GameBoardType) => void;
+  gameBoard: any;
+  answers: string[];
+  answer: string;
+  gameWon: boolean;
+  setGameWon: (gameWon: boolean) => void;
+  gameOver: boolean;
+  setGameOver: (gameOver: boolean) => void;
 };
 
-const indexToDelete = (board) => {
-  const [i, j] = findIndexOfFirstEmptyRow(board);
-
-  if (!i && !j) {
-    return [5, 4];
-  }
-
-  if (j === 0 && !board[i - 1][4].color) {
-    return [i - 1, 4];
-  }
-
-  return [i, j - 1];
-};
-
-const currentGuessArray = (board) =>
-  board.findIndex((letters) => letters.some((letter) => !letter.color));
-
-function Game() {
-  const [gameBoard, _setGameBoard] = useState(emptyBoard);
+function Game({
+  setStats,
+  gameBoard,
+  setGameBoard,
+  answers,
+  answer,
+  gameWon,
+  setGameWon,
+  gameOver,
+  setGameOver,
+}: GameProps) {
   const [shakeRow, setShakeRow] = useState<number | boolean>(false);
-  const [gameWon, setGameWon] = useState(false);
-  const [gameOver, setGameOver] = useState(false);
-  const answers = useRef<String[]>([]);
-  const answer = useRef<String>();
-
-  const gameBoardRef = useRef(gameBoard);
-
-  const setGameBoard = (gameBoard) => {
-    gameBoardRef.current = gameBoard;
-    _setGameBoard(gameBoard);
-  };
 
   const handleEnterClick = (newGameBoard, currentGuessRowIndex) => {
     let currentGuessRow = newGameBoard[currentGuessRowIndex];
 
-    const guessInList = answers.current.find(
+    const guessInList = answers.find(
       (a) => a === currentGuessRow?.map((letter) => letter.letter).join('')
     );
 
     if (guessInList) {
-      const answerWord = answer.current;
+      const answerWord = answer;
 
       // finds all green letters
       currentGuessRow = currentGuessRow.map((letterObject, index) => {
@@ -97,8 +81,7 @@ function Game() {
           return letterObject;
         }
 
-        const totalNumberInWord =
-          answer.current.split(letterObject.letter).length - 1;
+        const totalNumberInWord = answer.split(letterObject.letter).length - 1;
         const accountedFor = currentGuessRow
           .slice(0, index)
           .filter((a) => a.letter === letterObject.letter).length;
@@ -111,7 +94,7 @@ function Game() {
         const letterYellow =
           totalNumberInWord > accountedFor &&
           !greenLater &&
-          answer.current.toLowerCase().indexOf(letterObject.letter) >= 0;
+          answer.toLowerCase().indexOf(letterObject.letter) >= 0;
         if (letterYellow) {
           return {
             letter: letterObject.letter,
@@ -133,12 +116,12 @@ function Game() {
 
   const setKey = useCallback(
     (e) => {
-      if (gameWon || gameOver) {
+      if (gameWon || gameOver || e.ctrlKey) {
         return;
       }
 
       const incomingLetter = e.key;
-      let newGameBoard = [...gameBoardRef.current];
+      let newGameBoard = [...gameBoard];
 
       const [i, j] = findIndexOfFirstEmptyRow(newGameBoard);
 
@@ -171,34 +154,28 @@ function Game() {
         const gameIsWon = currentGuessRow.every(
           (letter) => letter.color === GREEN
         );
-        setGameWon(gameIsWon);
 
-        setGameOver(currentGuessRowIndex === 5);
+        const gameOver = currentGuessRowIndex === 5;
+
+        if (gameIsWon) {
+          setStats(currentGuessRowIndex);
+        } else if (gameOver) {
+          setStats(false);
+        }
       }
-
+      save('gameBoard', newGameBoard);
       setGameBoard(newGameBoard);
     },
-    [gameBoardRef, gameWon, gameOver]
+    [gameBoard, gameWon, gameOver, answer, answers]
   );
 
   useEffect(() => {
     window.addEventListener('keydown', setKey);
 
-    fetch(validGuesses)
-      .then((r) => r.text())
-      .then((text) => {
-        const validAnswers = text.split('\n');
-        answers.current = validAnswers;
-        const randomAnswer =
-          validAnswers[Math.floor(Math.random() * validAnswers.length)];
-        console.log(randomAnswer);
-        answer.current = randomAnswer;
-      });
-
     return () => {
       window.removeEventListener('keydown', setKey);
     };
-  }, [setKey, answer]);
+  }, [setKey]);
 
   useLayoutEffect(() => {
     const list = document.querySelectorAll('.should-flip');
@@ -219,7 +196,7 @@ function Game() {
             key={i}
           >
             {row.map((letter, j) =>
-              gameBoard[i][4].color ? (
+              useFlipRow(gameBoard, i) ? (
                 <FlippingLetter letter={letter} key={j} />
               ) : (
                 <Letter letter={letter} key={j} />
@@ -227,7 +204,7 @@ function Game() {
             )}
           </div>
         ))}
-        {gameOver && <div>You lose, the word was {answer.current}</div>}
+        {gameOver && <div>You lose, the word was {answer}</div>}
         {gameWon && (
           <div>
             <Confetti
