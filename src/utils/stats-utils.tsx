@@ -59,3 +59,6 @@ export const updateStats = (stats: StatsType, result: boolean) => {
 
   return newStats;
 };
+
+export const dateToday = () =>
+  new Date().toJSON().slice(0, 10).replace(/-/g, '/');

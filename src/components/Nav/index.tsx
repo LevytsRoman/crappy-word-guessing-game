@@ -1,19 +1,20 @@
 import classNames from 'classnames';
 import './index.scss';
 import { StatsIcon } from '../Icons/StatsIcon';
+import { SettingsIcon } from '../Icons/SettingsIcon';
 type NavProps = {
   openStats: () => void;
-  // letter: {
-  //   letter: string;
-  //   color?: string;
-  // };
+  openSettings: () => void;
 };
 
-export default function Nav({ openStats }: NavProps) {
+export default function Nav({ openStats, openSettings }: NavProps) {
   return (
     <div className="nav-wrapper">
-      <button onClick={openStats}>
+      <button className="icon-button" onClick={openStats}>
         <StatsIcon />
+      </button>
+      <button className="icon-button" onClick={openSettings}>
+        <SettingsIcon />
       </button>
     </div>
   );

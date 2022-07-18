@@ -2,48 +2,71 @@ import './App.scss';
 import { useEffect, useState } from 'react';
 import Game from './components/Game';
 import StatsModal from './components/StatsModal';
+import SettingsModal, { SettingsType } from './components/SettingsModal';
 import Nav from './components/Nav';
 import { save, retrieve, remove } from './storage/localStorage';
 import {
   updateStats,
   initialStats,
+  dateToday,
   initialGuessDistribution,
 } from './utils/stats-utils';
 import { emptyBoard } from './utils/board-utils';
 import validGuesses from './words.txt';
+import { GREEN } from './components/constants';
+import Confetti from 'react-confetti';
 
 function App() {
   const [showStats, setShowStats] = useState(false);
-  const [stats, _setStats] = useState(initialStats);
-  const [guessDistribution, setGuessDistribution] = useState(
-    initialGuessDistribution
-  );
+  const [showSettings, setShowSettings] = useState(false);
+  const [settings, _setSettings] = useState({ hardMode: false });
+  const [stats, _setStats] = useState({});
+  const [guessDistribution, setGuessDistribution] = useState({});
   const [answers, setAnswers] = useState([]);
   const [answer, setAnswer] = useState(null);
-  const [gameBoard, _setGameBoard] = useState(emptyBoard);
+  const [gameBoard, setGameBoard] = useState(emptyBoard);
   const [gameWon, setGameWon] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [toggleWord, setToggleWord] = useState(true);
 
   const setStats = (result) => {
-    let updatedStats = updateStats(stats, !!result);
+    let updatedStats = updateStats(
+      stats[dateToday()] || initialStats,
+      typeof result === 'number'
+    );
 
     if (typeof result === 'number') {
-      let newGuessDistribution = [...guessDistribution];
+      let newGuessDistribution = [
+        ...(guessDistribution[dateToday()] || initialGuessDistribution),
+      ];
       newGuessDistribution[result] = newGuessDistribution[result] + 1;
-      save('guessDistribution', newGuessDistribution);
-      setGuessDistribution(newGuessDistribution);
+      save('guessDistribution', {
+        ...guessDistribution,
+        [dateToday()]: newGuessDistribution,
+      });
+      setGuessDistribution({
+        ...guessDistribution,
+        [dateToday()]: newGuessDistribution,
+      });
+      setGameWon(true);
+    } else {
+      setGameOver(true);
     }
 
-    save('stats', updatedStats);
-    _setStats(updatedStats);
+    save('stats', { ...stats, [dateToday()]: updatedStats });
+    _setStats({ ...stats, [dateToday()]: updatedStats });
     setShowStats(true);
+  };
+
+  const setSettings = (settings) => {
+    _setSettings(settings);
+    save('settings', settings);
   };
 
   const resetBoard = () => {
     remove('answer');
     remove('gameBoard');
-    _setGameBoard(emptyBoard);
+    setGameBoard(emptyBoard);
     setGameOver(false);
     setGameWon(false);
     setShowStats(false);
@@ -52,18 +75,41 @@ function App() {
 
   useEffect(() => {
     const stats = retrieve('stats');
-    if (stats) {
+    if (stats && stats[dateToday()]) {
       _setStats(stats);
+    } else {
+      _setStats({ ...stats, [dateToday()]: initialStats });
     }
 
     const distribution = retrieve('guessDistribution');
-    if (distribution) {
+    if (distribution && distribution[dateToday()]) {
       setGuessDistribution(distribution);
+    } else {
+      setGuessDistribution({
+        ...distribution,
+        [dateToday()]: initialGuessDistribution,
+      });
     }
 
     const storedGameBoard = retrieve('gameBoard');
     if (storedGameBoard) {
-      _setGameBoard(storedGameBoard);
+      setGameBoard(storedGameBoard);
+      if (
+        storedGameBoard.find((row) =>
+          row.every((letter) => letter.color === GREEN)
+        )
+      ) {
+        setGameWon(true);
+      }
+      if (storedGameBoard.every((row) => row.every((letter) => letter.color))) {
+        setGameOver(true);
+      }
+    }
+
+    const storedSettings = retrieve('settings');
+
+    if (storedSettings) {
+      _setSettings(storedSettings);
     }
 
     fetch(validGuesses)
@@ -87,25 +133,47 @@ function App() {
   console.log(answer);
   return (
     <div className="App">
-      <Nav openStats={() => setShowStats(true)} />
+      <Nav
+        openSettings={() => setShowSettings(true)}
+        openStats={() => setShowStats(true)}
+      />
       <Game
         setStats={setStats}
         answers={answers}
         answer={answer}
         gameBoard={gameBoard}
-        setGameBoard={_setGameBoard}
+        setGameBoard={setGameBoard}
         gameWon={gameWon}
-        setGameWon={setGameWon}
         gameOver={gameOver}
-        setGameOver={setGameOver}
-      />
-      <StatsModal
-        showStats={showStats}
-        distribution={guessDistribution}
-        stats={stats}
-        closeModal={() => setShowStats(false)}
+        hardMode={settings.hardMode}
         resetBoard={resetBoard}
       />
+      {showStats && (
+        <StatsModal
+          showStats={showStats}
+          gameWon={gameWon}
+          answer={answer}
+          gameOver={gameOver}
+          distribution={guessDistribution}
+          stats={stats}
+          closeModal={() => setShowStats(false)}
+          resetBoard={resetBoard}
+        />
+      )}
+      <SettingsModal
+        showSettings={showSettings}
+        settings={settings}
+        setSettings={setSettings}
+        closeModal={() => setShowSettings(false)}
+      />
+
+      {gameWon && (
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          recycle={false}
+        />
+      )}
     </div>
   );
 }

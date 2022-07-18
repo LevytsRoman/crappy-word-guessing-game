@@ -10,9 +10,9 @@ type StatProps = {
 export default function Stat({ stat }: StatProps) {
   const { text, count } = stat;
   return (
-    <div>
-      <div>{text}</div>
-      <div>{count}</div>
+    <div className="stat-box">
+      <div className="stat-number">{Math.ceil(count)}</div>
+      <div className="stat-header">{text}</div>
     </div>
   );
 }

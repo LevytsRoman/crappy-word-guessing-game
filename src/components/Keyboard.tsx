@@ -36,7 +36,7 @@ const decideKeyClass = (key, gameBoard) => {
 
 export default function Keyboard({ setKey, gameBoard }: LetterBox) {
   return (
-    <div className="keyboard-wrapper">
+    <div className="flex">
       {KEYBOARD.map((row, j) => (
         <div className="keyboard-row" key={j}>
           {row.map((letter, i) => (

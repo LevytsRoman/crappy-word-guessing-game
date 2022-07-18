@@ -1,0 +1,55 @@
+
+
+.stats {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.stat-box {
+  display: flex;
+  flex-direction: column;
+  width: 50px;
+}
+
+.stat-header {
+  word-wrap: break-word;
+  font-size: 12px;
+}
+
+.stat-number {
+  font-size: 30px;
+}
+
+.distribution-container {
+  width: 100%;
+}
+.guess-stats-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 10px;
+}
+
+.guess-bar {
+  width: 250px;
+  height: 20px;
+  line-height: 20px;
+  color: white;
+  font-size: 12px;
+}
+
+.filled-bar {
+  height: 100%;
+  text-align: right;
+  padding-right: 5px;
+  transition: width 0.2s ease-in-out;
+}
+
+.modal-heading {
+  font-size: 12px;
+  font-weight: 400;
+}

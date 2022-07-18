@@ -5,7 +5,6 @@ import {
   useCallback,
   useRef,
 } from 'react';
-import Confetti from 'react-confetti';
 import Letter from './Letter';
 import FlippingLetter from './FlippingLetter';
 import classNames from 'classnames';
@@ -18,7 +17,7 @@ import {
   currentGuessArray,
   indexToDelete,
 } from '../utils/board-utils';
-
+import Notification from './Notification';
 const useFlipRow = (board, i) => {
   return (
     board[i].every((letter) => letter.color) &&
@@ -34,23 +33,24 @@ type GameProps = {
   answers: string[];
   answer: string;
   gameWon: boolean;
-  setGameWon: (gameWon: boolean) => void;
   gameOver: boolean;
-  setGameOver: (gameOver: boolean) => void;
+  hardMode: boolean;
+  resetBoard: () => void;
 };
 
 function Game({
   setStats,
   gameBoard,
   setGameBoard,
+  resetBoard,
   answers,
   answer,
   gameWon,
-  setGameWon,
   gameOver,
-  setGameOver,
+  hardMode,
 }: GameProps) {
   const [shakeRow, setShakeRow] = useState<number | boolean>(false);
+  const [error, setError] = useState<boolean | string>(false);
 
   const handleEnterClick = (newGameBoard, currentGuessRowIndex) => {
     let currentGuessRow = newGameBoard[currentGuessRowIndex];
@@ -58,8 +58,35 @@ function Game({
     const guessInList = answers.find(
       (a) => a === currentGuessRow?.map((letter) => letter.letter).join('')
     );
+    let newError;
+    if (currentGuessRow.some((letter) => !letter.letter)) {
+      newError = 'Guess is too short';
+    } else if (!guessInList) {
+      newError = 'Not a valid word';
+    } else if (hardMode && newGameBoard[currentGuessRowIndex - 1]) {
+      const previousRow = newGameBoard[currentGuessRowIndex - 1];
+      console.log(previousRow);
+      for (const [i, letter] of previousRow.entries()) {
+        if (
+          letter.color === GREEN &&
+          currentGuessRow[i].letter !== letter.letter
+        ) {
+          newError = `${letter.letter} must be in position ${i + 1}`;
+          break;
+        }
+        if (
+          letter.color === YELLOW &&
+          !currentGuessRow.find(
+            (guessLEtter) => guessLEtter.letter === letter.letter
+          )
+        ) {
+          newError = `${letter.letter} must be in word`;
+          break;
+        }
+      }
+    }
 
-    if (guessInList) {
+    if (guessInList && !newError) {
       const answerWord = answer;
 
       // finds all green letters
@@ -108,6 +135,7 @@ function Game({
         };
       });
     } else {
+      setError(newError);
       setShakeRow(currentGuessRowIndex);
       setTimeout(() => setShakeRow(false), 200);
     }
@@ -132,6 +160,7 @@ function Game({
         newGameBoard[i][j] = {
           letter: incomingLetter,
         };
+        setError(false);
       }
 
       if (incomingLetter === 'Backspace') {
@@ -140,6 +169,7 @@ function Game({
         newGameBoard[row][letter] = {
           letter: null,
         };
+        setError(false);
       }
 
       if (incomingLetter === 'Enter') {
@@ -155,7 +185,7 @@ function Game({
           (letter) => letter.color === GREEN
         );
 
-        const gameOver = currentGuessRowIndex === 5;
+        const gameOver = currentGuessRowIndex === 5 && currentGuessRow[4].color;
 
         if (gameIsWon) {
           setStats(currentGuessRowIndex);
@@ -185,8 +215,9 @@ function Game({
   });
 
   return (
-    <div style={{ width: '100%' }}>
-      <div className="keyboard-wrapper">
+    <div className="game-container">
+      {error && <Notification text={error as string} />}
+      <div className="flex board">
         {gameBoard.map((row, i) => (
           <div
             className={classNames('game-row', {
@@ -204,19 +235,15 @@ function Game({
             )}
           </div>
         ))}
-        {gameOver && <div>You lose, the word was {answer}</div>}
-        {gameWon && (
-          <div>
-            <Confetti
-              width={window.innerWidth}
-              height={window.innerHeight}
-              recycle={false}
-            />
-            {Math.random() > 0.05
-              ? 'win'
-              : "Can't believe you didn't guess it sooner, it was so obvious!"}
-          </div>
-        )}
+        <div className="flex margin-top">
+          {gameOver && <div>You lose, the word was {answer}</div>}
+
+          {(gameOver || gameWon) && (
+            <button className="button" onClick={resetBoard}>
+              Play Again
+            </button>
+          )}
+        </div>
       </div>
       <Keyboard gameBoard={gameBoard} setKey={setKey} />
     </div>
