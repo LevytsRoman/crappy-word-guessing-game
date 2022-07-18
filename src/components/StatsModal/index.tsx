@@ -43,7 +43,7 @@ export default function StatsModal({
     <Modal open={showStats} closeModal={closeModal}>
       <div className="modal-section">
         <h2 className="modal-heading">
-          STATISTICS for{' '}
+          settings for{' '}
           <select
             name="date"
             defaultValue={selectedStatsKey}
@@ -69,7 +69,7 @@ export default function StatsModal({
         </div>
       </div>
       <div className="modal-section">
-        <h2 className="modal-heading">GUESS DISTRIBUTION</h2>
+        <h2 className="modal-heading">guess distribution</h2>
         <div className="distribution-container">
           {distribution[selectedStatsKey] &&
             distribution[selectedStatsKey].map((num, i) => {

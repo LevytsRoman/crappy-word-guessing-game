@@ -12,6 +12,7 @@ export default function Letter({ letter }: LetterBox) {
     <div
       className={classNames('letter-guess', {
         [letter.color]: letter.color,
+        'letter-filled': letter.letter,
       })}
     >
       {letter.letter}

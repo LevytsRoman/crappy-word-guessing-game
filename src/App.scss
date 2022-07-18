@@ -1,6 +1,22 @@
+@import './colors.scss';
+
+
+// $letterBorder: white;
+// $blank-card-background: black;
+// $blank-letter-color: white;
+// $letterDarkBorder: #818384;
+// $filledLetterColor: black;
+// $letterInWord: #b59f3b;
+// $letterMatch: #538d4e;
+// $letterWrong: #818384;
+// $keyboardLetterWrong: rgb(75, 75, 75);
+// $buttonHover: darkgreen;
+
 body {
   width: 100vw;
-  height: 90vh;
+  height: 83vh;
+  overflow-y: hidden;
+  background-color: $blank-card-background;
 }
 
 * {
@@ -55,7 +71,7 @@ body {
 .letter-guess {
   width: 60px;
   height: 60px;
-  border: 1px solid lightgray;
+  border: 1px solid $letterBorder;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -67,8 +83,8 @@ body {
 
 .front {
   position: absolute;
-  background-color: white !important;
-  color: black !important;
+  background-color: $blank-card-background !important;
+  color: $blank-letter-color !important;
 }
 
 .back {
@@ -77,8 +93,9 @@ body {
 
 .letter-filled {
   animation: increase .2s ease-out;
-  border-color: gray;
+  border-color: $letterDarkBorder;
   animation-iteration-count: 1;
+  color: $blank-letter-color;
 }
 
 @keyframes increase {
@@ -99,7 +116,7 @@ body {
 }
 
 .keyboard-key {
-  color: white;
+  color: $blank-card-background;
   width: 50px;
   height: 50px;
   font-size: 25px;
@@ -116,26 +133,26 @@ body {
 
 .previous-guesses .letter-guess {
   background-color: gray;
-  color: white;
+  color: $filledLetterColor;
 }
 
 .yellow {
-  color: white;
-  background-color: #b59f3b !important;
+  color: $filledLetterColor;
+  background-color: $letterInWord !important;
 }
 
 .green {
-  color: white;
-  background-color: #538d4e !important;
+  color: $filledLetterColor;
+  background-color: $letterMatch !important;
 }
 
 .grey {
-  color: white;
-  background-color: #818384 !important;
+  color: $filledLetterColor;
+  background-color: $letterWrong !important;
 }
 
 .dark-grey {
-  background-color: rgb(75, 75, 75) !important;
+  background-color: $keyboardLetterWrong !important;
 }
 
 .shake-row {
@@ -171,8 +188,8 @@ body {
   cursor: pointer;
   padding: 10px;
   border-radius: 5px;
-  background-color: #538d4e;
-  color: white;
+  background-color: $letterMatch;
+  color: $blank-card-background;
   font-size: 12px;
   text-transform: uppercase;
   font-weight: 600;
@@ -181,7 +198,8 @@ body {
 }
 
 .button:hover {
-  background-color: darkgreen;
+  // background-color: $buttonHover;
+  filter: brightness(95%);
 }
 
 .flex {

@@ -1,3 +1,5 @@
+@import '../../colors.scss';
+
 .modal-backdrop {
   width: 100vw;
   height: 100vh;
@@ -21,12 +23,13 @@
   transform: translate(-50%, -50%);
   width: 90%;
   max-width: 400px;
-  background-color: white;
+  background-color: $blank-card-background;
   box-shadow: 0px 3px 9px -1px rgba(0,0,0,0.39);
   border-radius: 5px;
   padding: 10px;
   min-height: 400px;
   transition: all 100ms linear;
+  color: $blank-letter-color;
 }
 
 .modal-section{

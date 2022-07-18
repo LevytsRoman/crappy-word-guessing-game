@@ -1,0 +1,45 @@
+:root {
+  --background: white;
+  --text: black;
+  --borders: #818384;
+  --filledLetter: white;
+  --letterFound: #b59f3b;
+  --letterCorrect: #538d4e;
+  --letterWrong: rgb(75, 75, 75);
+  // --background: red;
+  // --text: white;
+  // --borders: cyan;
+  // --filledLetter: white;
+  // --letterFound: purple;
+  // --letterCorrect: blue;
+  // --letterWrong: brown;
+  // --blue: #1e90ff;
+  // --white: #ffffff;
+}
+
+// unfilledLetterColor
+// filledInLetterColor
+// presentColorBg
+// correctColorBg
+// wrongColorBg
+// keyboardBg
+
+// .dark {
+//   --background: black;
+//   --text: white;
+//   --borders: lightgrey;
+//   --filledLetter: white;
+//   --letterFound: yellow;
+//   --letterCorrect: green;
+//   --letterWrong: gray;
+// }
+
+$letterBorder: var(--borders);
+$blank-card-background: var(--background);
+$blank-letter-color: var(--text);
+$letterDarkBorder: var(--borders);
+$filledLetterColor: var(--filledLetter);
+$letterInWord: var(--letterFound);
+$letterMatch: var(--letterCorrect);
+$letterWrong: var(--borders);
+$keyboardLetterWrong: var(--letterWrong)
