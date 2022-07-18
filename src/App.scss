@@ -33,20 +33,14 @@ body {
 .letter-wrapper {
   position: relative;
   transform-style: preserve-3d;
-  transition: all 1200ms cubic-bezier(0.22, 0.61, 0.36, 1.02);
+  transition: all 600ms cubic-bezier(0.22, 0.61, 0.36, 1.02);
 }
 
 .flip .letter-wrapper {
   transform: rotateX(180deg);
 }
 
-.flip .letter-wrapper:nth-child(1) {
-  transform: rotateX(900deg);
-  transition-duration: 3600ms;
-}
-
 .flip .letter-wrapper:nth-child(2) {
-  transform: rotateX(540deg);
   transition-delay: 250ms !important;
 }
 
@@ -59,8 +53,6 @@ body {
 }
 
 .flip .letter-wrapper:nth-child(5) {
-  transform: rotateX(540deg);
-  transition-duration: 2400ms;
   transition-delay: 1000ms !important;
 }
 
@@ -75,7 +67,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 35px;
+  font-size: 30px;
   font-weight: 600;
   text-transform: uppercase;
   margin: 2px;
@@ -116,19 +108,28 @@ body {
 }
 
 .keyboard-key {
-  color: $blank-card-background;
-  width: 50px;
-  height: 50px;
-  font-size: 25px;
+  color: black;
+  width: 32px;
+  height: 60px;
+  font-size: 20px;
   text-transform: capitalize;
-  font-weight: 600;
+  font-weight: 400;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #818384;
+  background-color: rgba(0, 0, 0, 0.3);
   border-radius: 5px;
-  margin: 2px;
+  margin: 3px;
   user-select: none;
+  border: none;
+}
+
+.keyboard-key:active {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.wide-letter {
+  width: 60px;
 }
 
 .previous-guesses .letter-guess {

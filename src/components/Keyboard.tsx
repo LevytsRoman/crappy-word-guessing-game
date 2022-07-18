@@ -40,19 +40,15 @@ export default function Keyboard({ setKey, gameBoard }: LetterBox) {
       {KEYBOARD.map((row, j) => (
         <div className="keyboard-row" key={j}>
           {row.map((letter, i) => (
-            <div
+            <a
               onClick={() => setKey({ key: letter })}
-              style={{
-                width:
-                  letter === 'Backspace' || letter === 'Enter'
-                    ? '100px'
-                    : '50px',
-              }}
-              className={`keyboard-key ${decideKeyClass(letter, gameBoard)}`}
+              className={`keyboard-key ${decideKeyClass(letter, gameBoard)} ${
+                (letter === 'Backspace' || letter === 'Enter') && 'wide-letter'
+              }`}
               key={i}
             >
               {letter === 'Backspace' ? '←' : letter}
-            </div>
+            </a>
           ))}
         </div>
       ))}
