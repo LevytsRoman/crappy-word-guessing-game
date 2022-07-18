@@ -148,18 +148,18 @@ function App() {
         hardMode={settings.hardMode}
         resetBoard={resetBoard}
       />
-      {showStats && (
-        <StatsModal
-          showStats={showStats}
-          gameWon={gameWon}
-          answer={answer}
-          gameOver={gameOver}
-          distribution={guessDistribution}
-          stats={stats}
-          closeModal={() => setShowStats(false)}
-          resetBoard={resetBoard}
-        />
-      )}
+
+      <StatsModal
+        showStats={showStats}
+        gameWon={gameWon}
+        answer={answer}
+        gameOver={gameOver}
+        distribution={guessDistribution}
+        stats={stats}
+        closeModal={() => setShowStats(false)}
+        resetBoard={resetBoard}
+      />
+
       <SettingsModal
         showSettings={showSettings}
         settings={settings}

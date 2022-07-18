@@ -50,7 +50,13 @@ function Game({
   hardMode,
 }: GameProps) {
   const [shakeRow, setShakeRow] = useState<number | boolean>(false);
-  const [error, setError] = useState<boolean | string>(false);
+  const [error, _setError] = useState<boolean | string>(false);
+
+  const setError = (error) => {
+    _setError(error);
+
+    setTimeout(() => _setError(false), 2000);
+  };
 
   const handleEnterClick = (newGameBoard, currentGuessRowIndex) => {
     let currentGuessRow = newGameBoard[currentGuessRowIndex];
@@ -160,7 +166,6 @@ function Game({
         newGameBoard[i][j] = {
           letter: incomingLetter,
         };
-        setError(false);
       }
 
       if (incomingLetter === 'Backspace') {
@@ -169,7 +174,6 @@ function Game({
         newGameBoard[row][letter] = {
           letter: null,
         };
-        setError(false);
       }
 
       if (incomingLetter === 'Enter') {

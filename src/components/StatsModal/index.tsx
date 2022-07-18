@@ -39,7 +39,6 @@ export default function StatsModal({
 }: ModalProps) {
   const [selectedStatsKey, setSelectedStatsKey] = useState(dateToday());
 
-  console.log(selectedStatsKey);
   return (
     <Modal open={showStats} closeModal={closeModal}>
       <div className="modal-section">
@@ -72,30 +71,31 @@ export default function StatsModal({
       <div className="modal-section">
         <h2 className="modal-heading">GUESS DISTRIBUTION</h2>
         <div className="distribution-container">
-          {distribution[selectedStatsKey].map((num, i) => {
-            return (
-              <div key={i} className="guess-stats-wrapper">
-                <div>{i + 1}</div>
-                <div className="guess-bar">
-                  <div
-                    className="filled-bar"
-                    style={{
-                      backgroundColor:
-                        Math.max(...distribution[selectedStatsKey]) === num &&
-                        num !== 0
-                          ? GREEN
-                          : GREY,
-                      width:
-                        calculateWidth(num, distribution[selectedStatsKey]) +
-                        '%',
-                    }}
-                  >
-                    {num}
+          {distribution[selectedStatsKey] &&
+            distribution[selectedStatsKey].map((num, i) => {
+              return (
+                <div key={i} className="guess-stats-wrapper">
+                  <div>{i + 1}</div>
+                  <div className="guess-bar">
+                    <div
+                      className="filled-bar"
+                      style={{
+                        backgroundColor:
+                          Math.max(...distribution[selectedStatsKey]) === num &&
+                          num !== 0
+                            ? GREEN
+                            : GREY,
+                        width:
+                          calculateWidth(num, distribution[selectedStatsKey]) +
+                          '%',
+                      }}
+                    >
+                      {num}
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
       </div>
       <div className="modal-section">

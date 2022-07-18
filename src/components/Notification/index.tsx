@@ -7,7 +7,13 @@ export default function Notification({ text }: { text: string }) {
     setTimeout(() => {
       document.querySelector('.notification-container').classList.add('move');
     }, 5);
-  }, []);
+
+    setTimeout(() => {
+      document
+        .querySelector('.notification-container')
+        ?.classList.remove('move');
+    }, 2000);
+  }, [text]);
 
   return <div className="notification-container">{text}</div>;
 }
