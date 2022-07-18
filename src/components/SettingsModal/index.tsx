@@ -21,7 +21,7 @@ export default function SettingsModal({
   return (
     <Modal open={showSettings} closeModal={closeModal}>
       <div className="modal-section">
-        <h2>Settings</h2>
+        <h2 className="modal-heading">Settings</h2>
         <label>
           <input
             type="checkbox"
