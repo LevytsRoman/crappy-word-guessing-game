@@ -130,7 +130,7 @@ function App() {
       });
   }, [toggleWord]);
 
-  console.log(answer);
+  // console.log(answer);
   return (
     <div className="App">
       <Nav

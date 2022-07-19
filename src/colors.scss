@@ -1,11 +1,12 @@
 :root {
   --background: white;
   --text: black;
-  --borders: #818384;
+  // --borders: #818384;
+  --borders: #d3d6da;
   --filledLetter: white;
   --letterFound: #b59f3b;
   --letterCorrect: #538d4e;
-  --letterWrong: rgb(75, 75, 75);
+  --letterWrong: #818384;
   // --background: red;
   // --text: white;
   // --borders: cyan;
@@ -37,9 +38,9 @@
 $letterBorder: var(--borders);
 $blank-card-background: var(--background);
 $blank-letter-color: var(--text);
-$letterDarkBorder: var(--borders);
+$letterDarkBorder: var(--letterWrong);
 $filledLetterColor: var(--filledLetter);
 $letterInWord: var(--letterFound);
 $letterMatch: var(--letterCorrect);
-$letterWrong: var(--borders);
+$letterWrong: var(--letterWrong);
 $keyboardLetterWrong: var(--letterWrong)

@@ -63,7 +63,7 @@ body {
 .letter-guess {
   width: 60px;
   height: 60px;
-  border: 1px solid $letterBorder;
+  border: 2px solid $letterBorder;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -84,15 +84,16 @@ body {
 }
 
 .letter-filled {
-  animation: increase .2s ease-out;
+  animation: increase 50ms ease-out;
   border-color: $letterDarkBorder;
+  // border-width: 2px;
   animation-iteration-count: 1;
   color: $blank-letter-color;
 }
 
 @keyframes increase {
   0% {transform: scale(1,1);}
-  50% {transform: scale(1.05,1.05);}
+  50% {transform: scale(1.1,1.1);}
   100% {transform: scale(1,1);}
 }
 
@@ -105,27 +106,24 @@ body {
   flex-direction: row;
   width: 100%;
   justify-content: center;
+  user-select: none;
 }
 
 .keyboard-key {
   color: black;
   width: 32px;
-  height: 60px;
-  font-size: 20px;
+  height: 58px;
+  font-size: 14px;
   text-transform: capitalize;
-  font-weight: 400;
+  font-weight: 600;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: #d3d6da;
   border-radius: 5px;
   margin: 3px;
   user-select: none;
   border: none;
-}
-
-.keyboard-key:active {
-  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .wide-letter {
@@ -139,25 +137,29 @@ body {
 
 .yellow {
   color: $filledLetterColor;
+  border-color: $filledLetterColor;
   background-color: $letterInWord !important;
 }
 
 .green {
   color: $filledLetterColor;
+  border-color: $filledLetterColor;
   background-color: $letterMatch !important;
 }
 
 .grey {
-  color: $filledLetterColor;
+  color: $filledLetterColor !important;
+  border-color: $filledLetterColor;
   background-color: $letterWrong !important;
 }
 
 .dark-grey {
+  color: $filledLetterColor !important;
   background-color: $keyboardLetterWrong !important;
 }
 
 .shake-row {
-  animation: shake 0.6s;
+  animation: shake 0.8s;
   animation-iteration-count: 1;
 }
 

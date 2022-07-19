@@ -38,7 +38,8 @@ export default function StatsModal({
   stats,
 }: ModalProps) {
   const [selectedStatsKey, setSelectedStatsKey] = useState(dateToday());
-
+  console.log({ selectedStatsKey });
+  console.log(Object.keys(stats));
   return (
     <Modal open={showStats} closeModal={closeModal}>
       <div className="modal-section">
@@ -46,12 +47,16 @@ export default function StatsModal({
           Stats for{' '}
           <select
             name="date"
-            defaultValue={selectedStatsKey}
+            value={selectedStatsKey}
             onChange={(e) => setSelectedStatsKey(e.target.value)}
           >
             {stats &&
               Object.keys(stats).map((dateKey) => (
-                <option key={dateKey} value={dateKey}>
+                <option
+                  key={dateKey}
+                  value={dateKey}
+                  // selected={dateKey === selectedStatsKey}
+                >
                   {dateKey}
                 </option>
               ))}

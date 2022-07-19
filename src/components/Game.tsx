@@ -115,21 +115,17 @@ function Game({
         }
 
         const totalNumberInWord = answer.split(letterObject.letter).length - 1;
-        console.log({ totalNumberInWord });
+
         const accountedFor = currentGuessRow
           .slice(0, index)
           .filter((a) => a.letter === letterObject.letter).length;
-        console.log({ accountedFor });
-        console.log({ index });
-        console.log({ currentGuessRow });
-        console.log(currentGuessRow.slice(index, currentGuessRow.length));
+
         const greenLater =
           currentGuessRow
             .slice(index, currentGuessRow.length)
             .filter(
               (a) => a.letter === letterObject.letter && a.color === GREEN
             ).length > 0;
-        console.log({ greenLater });
         const letterYellow =
           totalNumberInWord > accountedFor &&
           !greenLater &&

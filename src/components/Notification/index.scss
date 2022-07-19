@@ -1,14 +1,16 @@
 .notification-container {
-  width: 200px;
-  height: 70px;
+  width: 170px;
+  height: 50px;
   border-radius: 4px;
   position: absolute;
+  font-size: 12px;
+  font-weight: 600;
   background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
   box-shadow: 0px 3px 9px -1px rgba(0,0,0,0.39);
-  transition: all 100ms cubic-bezier(1, 0.25, 0.82, 1.13);
+  transition: all 50ms cubic-bezier(1, 0.25, 0.82, 1.13);
   top: 0px;
   left: 50%;
   opacity: 0;

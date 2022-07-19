@@ -12,7 +12,7 @@ export default function Notification({ text }: { text: string }) {
       document
         .querySelector('.notification-container')
         ?.classList.remove('move');
-    }, 2000);
+    }, 1000);
   }, [text]);
 
   return <div className="notification-container">{text}</div>;
