@@ -1,3 +1,5 @@
+import { GREEN, YELLOW, GREY } from '../components/constants';
+
 export type GameBoardType = {
   letter: string | null;
   color?: string;
@@ -42,3 +44,36 @@ export const indexToDelete = (board) => {
 
 export const currentGuessArray = (board) =>
   board.findIndex((letters) => letters.some((letter) => !letter.color));
+
+export const findColor = (
+  row: { letter: string; color?: string }[],
+  answer: string
+) => {
+  for (let i = 0; i < row.length; i++) {
+    let answerIndex = answer.indexOf(row[i].letter);
+
+    if (answerIndex === -1) {
+      row[i].color = GREY;
+    }
+
+    if (row[i].letter === answer[i]) {
+      row[i].color = GREEN;
+    }
+  }
+
+  for (let i = 0; i < row.length; i++) {
+    if (!row[i].color) {
+      let used = row.filter(
+        (l) => l.letter === row[i].letter && l.color
+      ).length;
+      let matcher = new RegExp(row[i].letter, 'g');
+      if (used < answer.match(matcher).length) {
+        row[i].color = YELLOW;
+      } else {
+        row[i].color = GREY;
+      }
+    }
+  }
+
+  return row;
+};

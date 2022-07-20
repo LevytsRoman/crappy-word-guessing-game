@@ -16,6 +16,7 @@ import {
   findIndexOfFirstEmptyRow,
   currentGuessArray,
   indexToDelete,
+  findColor,
 } from '../utils/board-utils';
 import Notification from './Notification';
 const useFlipRow = (board, i) => {
@@ -94,55 +95,7 @@ function Game({
     }
 
     if (guessInList && !newError) {
-      const answerWord = answer;
-
-      // finds all green letters
-      currentGuessRow = currentGuessRow.map((letterObject, index) => {
-        if (letterObject.letter === answerWord[index]) {
-          return {
-            letter: letterObject.letter,
-            color: GREEN,
-          };
-        }
-
-        return {
-          letter: letterObject.letter,
-        };
-      });
-
-      currentGuessRow = currentGuessRow.map((letterObject, index) => {
-        if (letterObject.color) {
-          return letterObject;
-        }
-
-        const totalNumberInWord = answer.split(letterObject.letter).length - 1;
-
-        const accountedFor = currentGuessRow
-          .slice(0, index)
-          .filter((a) => a.letter === letterObject.letter).length;
-
-        const greenLater =
-          currentGuessRow
-            .slice(index, currentGuessRow.length)
-            .filter(
-              (a) => a.letter === letterObject.letter && a.color === GREEN
-            ).length > 0;
-        const letterYellow =
-          totalNumberInWord > accountedFor &&
-          !greenLater &&
-          answer.toLowerCase().indexOf(letterObject.letter) >= 0;
-        if (letterYellow) {
-          return {
-            letter: letterObject.letter,
-            color: YELLOW,
-          };
-        }
-
-        return {
-          letter: letterObject.letter,
-          color: GREY,
-        };
-      });
+      currentGuessRow = findColor(currentGuessRow, answer);
     } else {
       setError(newError);
       setShakeRow(currentGuessRowIndex);
