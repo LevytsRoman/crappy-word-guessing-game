@@ -127,10 +127,11 @@ function Game({
             .filter(
               (a) => a.letter === letterObject.letter && a.color === GREEN
             ).length > 0;
+
         const letterYellow =
-          totalNumberInWord > accountedFor &&
-          !greenLater &&
-          answer.toLowerCase().indexOf(letterObject.letter) >= 0;
+          totalNumberInWord - accountedFor > 1 ||
+          (totalNumberInWord - accountedFor === 1 && greenLater);
+
         if (letterYellow) {
           return {
             letter: letterObject.letter,

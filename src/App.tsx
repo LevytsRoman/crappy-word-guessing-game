@@ -131,7 +131,6 @@ function App() {
       });
   }, [toggleWord]);
 
-  // console.log(answer);
   return (
     <div className="App">
       <Nav
