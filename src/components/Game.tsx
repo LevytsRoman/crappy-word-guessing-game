@@ -51,6 +51,7 @@ function Game({
 }: GameProps) {
   const [shakeRow, setShakeRow] = useState<number | boolean>(false);
   const [error, _setError] = useState<boolean | string>(false);
+  const [keyboard, setKeyboard] = useState(gameBoard);
 
   const setError = (error) => {
     _setError(error);
@@ -218,7 +219,12 @@ function Game({
     setTimeout(() => {
       list[list.length - 1]?.classList.add('flip');
     }, 10);
-  });
+
+    setTimeout(
+      () => setKeyboard(gameBoard),
+      gameBoard[0].every((a) => !a.letter) ? 0 : 1400
+    );
+  }, [gameBoard]);
 
   return (
     <div className="game-container">
@@ -251,7 +257,7 @@ function Game({
           )}
         </div>
       </div>
-      <Keyboard gameBoard={gameBoard} setKey={setKey} />
+      <Keyboard gameBoard={keyboard} setKey={setKey} />
     </div>
   );
 }

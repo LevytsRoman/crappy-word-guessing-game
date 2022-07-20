@@ -43,6 +43,7 @@ export default function Keyboard({ setKey, gameBoard }: LetterBox) {
             <div
               onClick={() => setKey({ key: letter })}
               onTouchStart={(e) => {
+                navigator.vibrate(1);
                 //@ts-ignore
                 e.target.style.filter = 'brightness(80%)';
               }}

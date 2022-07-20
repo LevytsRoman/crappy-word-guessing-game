@@ -48,14 +48,15 @@ function App() {
         ...guessDistribution,
         [dateToday()]: newGuessDistribution,
       });
-      setGameWon(true);
+
+      setTimeout(() => setGameWon(true), 1400);
     } else {
-      setGameOver(true);
+      setTimeout(() => setGameOver(true), 1400);
     }
 
     save('stats', { ...stats, [dateToday()]: updatedStats });
     _setStats({ ...stats, [dateToday()]: updatedStats });
-    setShowStats(true);
+    setTimeout(() => setShowStats(true), 1400);
   };
 
   const setSettings = (settings) => {
@@ -167,7 +168,7 @@ function App() {
         closeModal={() => setShowSettings(false)}
       />
 
-      {gameWon && (
+      {gameWon && showStats && (
         <Confetti
           width={window.innerWidth}
           height={window.innerHeight}
