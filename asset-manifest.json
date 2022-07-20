@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/crappy-word-guessing-game/static/css/main.a0394b27.css",
-    "main.js": "/crappy-word-guessing-game/static/js/main.6facf12e.js",
+    "main.js": "/crappy-word-guessing-game/static/js/main.ffaf5cca.js",
     "static/js/787.0e240d77.chunk.js": "/crappy-word-guessing-game/static/js/787.0e240d77.chunk.js",
     "static/media/words.txt": "/crappy-word-guessing-game/static/media/words.715c4334d4848e1ab998.txt",
     "service-worker.js": "/crappy-word-guessing-game/service-worker.js",
     "index.html": "/crappy-word-guessing-game/index.html",
     "main.a0394b27.css.map": "/crappy-word-guessing-game/static/css/main.a0394b27.css.map",
-    "main.6facf12e.js.map": "/crappy-word-guessing-game/static/js/main.6facf12e.js.map",
+    "main.ffaf5cca.js.map": "/crappy-word-guessing-game/static/js/main.ffaf5cca.js.map",
     "787.0e240d77.chunk.js.map": "/crappy-word-guessing-game/static/js/787.0e240d77.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a0394b27.css",
-    "static/js/main.6facf12e.js"
+    "static/js/main.ffaf5cca.js"
   ]
 }
