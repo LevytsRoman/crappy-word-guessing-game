@@ -31,8 +31,7 @@ function App() {
       [settings.wordLength]: emptyBoard(6, settings.wordLength),
     }
   );
-  // const [gameWon, setGameWon] = useState(false);
-  // const [gameOver, setGameOver] = useState(false);
+
   const [toggleWord, setToggleWord] = useState(true);
 
   const setGameBoard = (newGameBoard) => {
@@ -40,30 +39,10 @@ function App() {
   };
 
   const setStats = (result) => {
-    // debugger;
     let updatedStats = updateStats(
       stats[dateToday()][settings.wordLength] || initialStats,
       typeof result === 'number'
     );
-
-    // stats = {
-    //   "4/5/2021": {
-    //     5: {
-    //       currentStreak
-    //       maxStreak
-    //       played
-    //       win
-    //       guessDistribution
-    //     },
-    //     6: {
-    //       currentStreak
-    //       maxStreak
-    //       played
-    //       win
-    //       guessDistribution
-    //     }
-    //   }
-    // }
 
     if (typeof result === 'number') {
       let updatedGuessDistribution = [
@@ -78,10 +57,6 @@ function App() {
       save('guessDistribution', newGuessDistribution);
 
       setGuessDistribution(newGuessDistribution);
-
-      // setTimeout(() => setGameWon(true), 1400);
-    } else {
-      // setTimeout(() => setGameOver(true), 1400);
     }
 
     let newStats = { ...stats };
@@ -93,7 +68,6 @@ function App() {
 
   const setSettings = (settings) => {
     _setSettings(settings);
-    // resetGame(settings.wordLength);
     save('settings', settings);
     if (!gameBoard[settings.wordLength]) {
       setGameBoard(emptyBoard(6, settings.wordLength));
@@ -106,8 +80,6 @@ function App() {
     console.log(settings.wordLength);
 
     setGameBoard(emptyBoard(6, settings.wordLength));
-    // setGameOver(false);
-    // setGameWon(false);
     setShowStats(false);
     setToggleWord(!toggleWord);
   };
@@ -149,9 +121,11 @@ function App() {
       let newDistribution = {};
       if (Object.keys(distribution).find((date) => distribution[date].length)) {
         Object.keys(distribution).map((key) => {
-          newDistribution[key] = {
-            [5]: distribution[key],
-          };
+          if (!newDistribution[key][5]) {
+            newDistribution[key] = {
+              [5]: distribution[key],
+            };
+          }
         });
         console.log({ newDistribution });
       } else {
@@ -186,21 +160,6 @@ function App() {
       } else {
         _setGameBoard(storedGameBoard);
       }
-      // debugger;
-      // if (
-      //   storedGameBoard[storedSettings?.wordLength || settings.wordLength].find(
-      //     (row) => row.every((letter) => letter.color === GREEN)
-      //   )
-      // ) {
-      //   // setGameWon(true);
-      // }
-      // if (
-      //   storedGameBoard[storedSettings.wordLength].every((row) =>
-      //     row.every((letter) => letter.color)
-      //   )
-      // ) {
-      //   setGameOver(true);
-      // }
     }
   }, []);
 
