@@ -207,7 +207,7 @@ function Game({
           </div>
         ))}
         <div className="flex margin-top">
-          {gameOver && <div>You lose, the word was {answer}</div>}
+          {gameOver && !gameWon && <div>You lose, the word was {answer}</div>}
 
           {(gameOver || gameWon) && (
             <button className="button" onClick={resetBoard}>

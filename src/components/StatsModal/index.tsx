@@ -120,7 +120,7 @@ export default function StatsModal({
         </div>
       </div>
       <div className="modal-section">
-        {gameOver && <div>You lose, the word was {answer}</div>}
+        {gameOver && !gameWon && <div>You lose, the word was {answer}</div>}
         {(gameOver || gameWon) && (
           <button className="button" onClick={resetBoard}>
             Play Again

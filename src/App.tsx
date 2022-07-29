@@ -121,10 +121,12 @@ function App() {
       let newDistribution = {};
       if (Object.keys(distribution).find((date) => distribution[date].length)) {
         Object.keys(distribution).map((key) => {
-          if (!newDistribution[key][5]) {
+          if (!distribution[key][5]) {
             newDistribution[key] = {
               [5]: distribution[key],
             };
+          } else {
+            newDistribution[key] = distribution[key];
           }
         });
         console.log({ newDistribution });
