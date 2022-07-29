@@ -27,7 +27,7 @@ export default function SettingsModal({
         <h2 className="modal-heading">Settings</h2>
         <label>
           <input
-            disabled={gameOver}
+            disabled={!gameOver}
             type="checkbox"
             name="hard_mode"
             checked={settings.hardMode}
@@ -39,7 +39,6 @@ export default function SettingsModal({
         </label>
         <select
           name="wordLength"
-          disabled={gameOver}
           value={settings.wordLength}
           onChange={(e) =>
             setSettings({ ...settings, wordLength: parseInt(e.target.value) })

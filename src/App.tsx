@@ -75,7 +75,7 @@ function App() {
   };
 
   const resetBoard = () => {
-    remove('answer');
+    save('answer', { ...answer, [settings.wordLength]: undefined });
     remove('gameBoard');
     console.log(settings.wordLength);
 
@@ -121,7 +121,7 @@ function App() {
       let newDistribution = {};
       if (Object.keys(distribution).find((date) => distribution[date].length)) {
         Object.keys(distribution).map((key) => {
-          if (!distribution[key][5]) {
+          if (distribution[key].length > 2) {
             newDistribution[key] = {
               [5]: distribution[key],
             };
@@ -178,15 +178,17 @@ function App() {
           validAnswers[Math.floor(Math.random() * validAnswers.length)];
 
         const answerWord = retrieve('answer');
-        if (answerWord && answerWord[settings.wordLength]) {
-          setAnswer(answerWord);
-        } else {
-          setAnswer({ ...answerWord, [settings.wordLength]: randomAnswer });
-          save('answer', {
-            ...answerWord,
-            [settings.wordLength]: randomAnswer,
-          });
-        }
+
+        setAnswer({
+          ...answerWord,
+          [settings.wordLength]:
+            (answerWord && answerWord[settings.wordLength]) || randomAnswer,
+        });
+        save('answer', {
+          ...answerWord,
+          [settings.wordLength]:
+            (answerWord && answerWord[settings.wordLength]) || randomAnswer,
+        });
       });
   }, [toggleWord, settings.wordLength]);
 

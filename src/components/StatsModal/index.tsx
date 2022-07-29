@@ -96,6 +96,7 @@ export default function StatsModal({
         <h2 className="modal-heading">Guess distribution</h2>
         <div className="distribution-container">
           {selectedDistribution &&
+            Array.isArray(selectedDistribution) &&
             selectedDistribution.map((num, i) => {
               return (
                 <div key={i} className="guess-stats-wrapper">
