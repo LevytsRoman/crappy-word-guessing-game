@@ -56,6 +56,10 @@ body {
   transition-delay: 1000ms !important;
 }
 
+.flip .letter-wrapper:nth-child(6) {
+  transition-delay: 1250ms !important;
+}
+
 .letter-wrapper .letter-guess {
   backface-visibility: hidden;
 }

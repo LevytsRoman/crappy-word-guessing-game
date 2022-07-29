@@ -40,6 +40,7 @@ function App() {
   };
 
   const setStats = (result) => {
+    // debugger;
     let updatedStats = updateStats(
       stats[dateToday()][settings.wordLength] || initialStats,
       typeof result === 'number'
@@ -67,7 +68,7 @@ function App() {
     if (typeof result === 'number') {
       let updatedGuessDistribution = [
         ...(guessDistribution[dateToday()][settings.wordLength] ||
-          initialGuessDistribution(settings.wordLength + 1)),
+          initialGuessDistribution(6)),
       ];
       updatedGuessDistribution[result] = updatedGuessDistribution[result] + 1;
 
@@ -117,7 +118,8 @@ function App() {
       // Migration of old stats to new one:
 
       let newStats = {};
-      if (Object.keys(stats[dateToday()]).length > 2) {
+
+      if (Object.keys(stats).find((date) => !stats[date][5])) {
         Object.keys(stats).map((key) => {
           newStats[key] = {
             [5]: stats[key],
@@ -129,33 +131,45 @@ function App() {
 
       _setStats(newStats);
     } else {
-      _setStats({
+      let statsWithTodaysDate = {
         ...stats,
-        [dateToday()]: { [settings.wordLength]: initialStats },
-      });
+      };
+
+      statsWithTodaysDate[dateToday()] = {
+        ...statsWithTodaysDate[dateToday()],
+        [settings.wordLength]: initialStats,
+      };
+
+      _setStats(statsWithTodaysDate);
     }
 
     const distribution = retrieve('guessDistribution');
+
     if (distribution && distribution[dateToday()]) {
       let newDistribution = {};
-      if (Object.keys(distribution[dateToday()]).length > 2) {
+      if (Object.keys(distribution).find((date) => distribution[date].length)) {
         Object.keys(distribution).map((key) => {
           newDistribution[key] = {
             [5]: distribution[key],
           };
         });
+        console.log({ newDistribution });
       } else {
         newDistribution = distribution;
       }
 
       setGuessDistribution(newDistribution);
     } else {
-      setGuessDistribution({
+      let distributionWithTodaysDate = {
         ...distribution,
-        [dateToday()]: {
-          [settings.wordLength]: initialGuessDistribution(settings.wordLength),
-        },
-      });
+      };
+
+      distributionWithTodaysDate[dateToday()] = {
+        ...distributionWithTodaysDate[dateToday()],
+        [settings.wordLength]: initialGuessDistribution(6),
+      };
+
+      setGuessDistribution(distributionWithTodaysDate);
     }
 
     const storedSettings = retrieve('settings');
@@ -221,9 +235,11 @@ function App() {
     answer &&
     answer[settings.wordLength];
 
-  const gameWon = !!gameBoard[settings.wordLength].find((row) =>
-    row.every((letter) => letter.color === GREEN)
-  );
+  const gameWon =
+    gameBoard[settings.wordLength] &&
+    !!gameBoard[settings.wordLength].find((row) =>
+      row.every((letter) => letter.color === GREEN)
+    );
 
   const gameOver = gameBoard[settings.wordLength]?.every((row) =>
     row.every((letter) => letter.color)
@@ -252,7 +268,7 @@ function App() {
       <StatsModal
         showStats={showStats}
         gameWon={gameWon}
-        answer={answer}
+        answer={answer && answer[settings.wordLength]}
         gameOver={gameOver}
         distribution={guessDistribution}
         stats={stats}

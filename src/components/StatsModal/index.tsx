@@ -50,6 +50,8 @@ export default function StatsModal({
     distribution[selectedStatsKey][selectedWordLength];
 
   console.log(distribution);
+  console.log({ selectedDistribution });
+  // debugger;
   return (
     <Modal open={showStats} closeModal={closeModal}>
       <div className="modal-section">
