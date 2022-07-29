@@ -112,12 +112,14 @@ function Game({
 
       const incomingLetter = e.key;
       let newGameBoard = [...gameBoard];
-
+      const rowLeangth = newGameBoard[0].length - 1;
+      const boardLength = newGameBoard.length - 1;
       const [i, j] = findIndexOfFirstEmptyRow(newGameBoard);
 
       if (
         LETTER_LIST.indexOf(incomingLetter) >= 0 &&
-        (i < 1 || (newGameBoard[i - 1] && newGameBoard[i - 1][4].color))
+        (i < 1 ||
+          (newGameBoard[i - 1] && newGameBoard[i - 1][rowLeangth].color))
       ) {
         newGameBoard[i][j] = {
           letter: incomingLetter,
@@ -145,7 +147,9 @@ function Game({
           (letter) => letter.color === GREEN
         );
 
-        const gameOver = currentGuessRowIndex === 5 && currentGuessRow[4].color;
+        const gameOver =
+          currentGuessRowIndex === boardLength &&
+          currentGuessRow[rowLeangth].color;
 
         if (gameIsWon) {
           setStats(currentGuessRowIndex);
@@ -153,7 +157,7 @@ function Game({
           setStats(false);
         }
       }
-      save('gameBoard', newGameBoard);
+      save('gameBoard', { [newGameBoard[0].length]: newGameBoard });
       setGameBoard(newGameBoard);
     },
     [gameBoard, gameWon, gameOver, answer, answers]
@@ -179,6 +183,8 @@ function Game({
     );
   }, [gameBoard]);
 
+  const rowLeangth = gameBoard[0].length - 1;
+
   return (
     <div className="game-container">
       {error && <Notification text={error as string} />}
@@ -187,7 +193,7 @@ function Game({
           <div
             className={classNames('game-row', {
               'shake-row': shakeRow === i,
-              'should-flip': row[4].color,
+              'should-flip': row[rowLeangth].color,
             })}
             key={i}
           >

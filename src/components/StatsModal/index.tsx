@@ -12,12 +12,13 @@ import { dateToday } from '../../utils/stats-utils';
 type ModalProps = {
   showStats: boolean;
   stats: { [key: string]: StatsType };
-  distribution: { [key: string]: number[] };
+  distribution: { [key: number]: { [key: string]: number[] } };
   closeModal: () => void;
   resetBoard: () => void;
   gameOver: boolean;
   gameWon: boolean;
   answer: string;
+  wordLength: number;
 };
 
 const calculateWidth = (num: number, distribution: number[]) => {
@@ -35,11 +36,20 @@ export default function StatsModal({
   gameOver,
   answer,
   gameWon,
+  wordLength,
   stats,
 }: ModalProps) {
   const [selectedStatsKey, setSelectedStatsKey] = useState(dateToday());
-  console.log({ selectedStatsKey });
-  console.log(Object.keys(stats));
+
+  const [selectedWordLength, setSelectedWordLength] = useState(wordLength);
+
+  const selectedStats =
+    stats[selectedStatsKey] && stats[selectedStatsKey][selectedWordLength];
+  const selectedDistribution =
+    distribution[selectedStatsKey] &&
+    distribution[selectedStatsKey][selectedWordLength];
+
+  console.log(distribution);
   return (
     <Modal open={showStats} closeModal={closeModal}>
       <div className="modal-section">
@@ -52,23 +62,30 @@ export default function StatsModal({
           >
             {stats &&
               Object.keys(stats).map((dateKey) => (
-                <option
-                  key={dateKey}
-                  value={dateKey}
-                  // selected={dateKey === selectedStatsKey}
-                >
+                <option key={dateKey} value={dateKey}>
                   {dateKey}
+                </option>
+              ))}
+          </select>
+          <select
+            name="wordLength"
+            value={selectedWordLength}
+            onChange={(e) => setSelectedWordLength(parseInt(e.target.value))}
+          >
+            {stats &&
+              [5, 6].map((num) => (
+                <option key={num} value={num}>
+                  {num}
                 </option>
               ))}
           </select>
         </h2>
         <div className="stats">
-          {stats &&
-            stats[selectedStatsKey] &&
-            Object.keys(stats[selectedStatsKey]).map((statKey) => (
+          {selectedStats &&
+            Object.keys(selectedStats).map((statKey) => (
               <Stat
-                stat={stats[selectedStatsKey][statKey]}
-                key={stats[selectedStatsKey][statKey].text}
+                stat={selectedStats[statKey]}
+                key={selectedStats[statKey].text}
               />
             ))}
         </div>
@@ -76,23 +93,20 @@ export default function StatsModal({
       <div className="modal-section">
         <h2 className="modal-heading">Guess distribution</h2>
         <div className="distribution-container">
-          {distribution[selectedStatsKey] &&
-            distribution[selectedStatsKey].map((num, i) => {
+          {selectedDistribution &&
+            selectedDistribution.map((num, i) => {
               return (
                 <div key={i} className="guess-stats-wrapper">
                   <div>{i + 1}</div>
                   <div className="guess-bar">
                     <div
                       className={`filled-bar ${
-                        Math.max(...distribution[selectedStatsKey]) === num &&
-                        num !== 0
+                        Math.max(...selectedDistribution) === num && num !== 0
                           ? GREEN
                           : GREY
                       }`}
                       style={{
-                        width:
-                          calculateWidth(num, distribution[selectedStatsKey]) +
-                          '%',
+                        width: calculateWidth(num, selectedDistribution) + '%',
                       }}
                     >
                       {num}

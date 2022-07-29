@@ -3,11 +3,13 @@ import Modal from '../Modal';
 
 export type SettingsType = {
   hardMode: boolean;
+  wordLength: number;
 };
 
 type ModalProps = {
   showSettings: boolean;
   settings: SettingsType;
+  gameOver: boolean;
   setSettings: (settings: any) => void;
   closeModal: () => void;
 };
@@ -15,6 +17,7 @@ type ModalProps = {
 export default function SettingsModal({
   showSettings,
   settings,
+  gameOver,
   closeModal,
   setSettings,
 }: ModalProps) {
@@ -24,6 +27,7 @@ export default function SettingsModal({
         <h2 className="modal-heading">Settings</h2>
         <label>
           <input
+            disabled={gameOver}
             type="checkbox"
             name="hard_mode"
             checked={settings.hardMode}
@@ -33,6 +37,17 @@ export default function SettingsModal({
           />
           Hard mode
         </label>
+        <select
+          name="wordLength"
+          disabled={gameOver}
+          value={settings.wordLength}
+          onChange={(e) =>
+            setSettings({ ...settings, wordLength: parseInt(e.target.value) })
+          }
+        >
+          <option value={5}>5</option>
+          <option value={6}>6</option>
+        </select>
       </div>
     </Modal>
   );

@@ -5,21 +5,23 @@ export type GameBoardType = {
   color?: string;
 }[][];
 
-export const emptyBoard: () => GameBoardType = () => {
-  return Array(6)
+export const emptyBoard: (rows: number, wordLength: number) => GameBoardType = (
+  rows,
+  wordLength
+) =>
+  Array(rows)
     .fill(0)
     .map(() =>
-      Array(5)
+      Array(wordLength)
         .fill(0)
         .map(() => ({
           letter: null,
         }))
     );
-};
 
 export const findIndexOfFirstEmptyRow = (board) => {
-  for (let i = 0; i < 6; i++) {
-    for (let j = 0; j < 5; j++) {
+  for (let i = 0; i < board.length; i++) {
+    for (let j = 0; j < board[0].length; j++) {
       if (!board[i][j].letter) {
         return [i, j];
       }
@@ -30,13 +32,14 @@ export const findIndexOfFirstEmptyRow = (board) => {
 
 export const indexToDelete = (board) => {
   const [i, j] = findIndexOfFirstEmptyRow(board);
-
+  const wordLength = board[0].length - 1;
+  const boardLength = board.length - 1;
   if (!i && !j) {
-    return [5, 4];
+    return [boardLength, wordLength];
   }
 
-  if (j === 0 && !board[i - 1][4].color) {
-    return [i - 1, 4];
+  if (j === 0 && !board[i - 1][wordLength].color) {
+    return [i - 1, wordLength];
   }
 
   return [i, j - 1];

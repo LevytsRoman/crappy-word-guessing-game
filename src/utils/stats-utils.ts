@@ -36,9 +36,10 @@ export const initialStats = {
   },
 };
 
-export const initialGuessDistribution = [0, 0, 0, 0, 0, 0];
+export const initialGuessDistribution = (num) => Array(num).fill(0);
 
 export const updateStats = (stats: StatsType, result: boolean) => {
+  debugger;
   let newStats = { ...stats };
   let winNumber = (stats.played.count * stats.win.count) / 100;
 
